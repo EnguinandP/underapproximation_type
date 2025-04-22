@@ -140,7 +140,13 @@ and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
       failwith
         "Cannot infer the type of the exception, should provide the return type"
   | Const c -> (Const c) #: (Normal_constant_typing.infer_constant c)
+  (* | Var (Some (x = "hui") -> *)
   | Var id ->
+      if (id.x = "frequency_gen_list") then
+        (* let _ = Printf.printf "id: %s\n" id.x in *)
+        (Var (id.x #: Nt.Ty_unit)) #: (NT.Ty_arrow ((NT.Ty_arrow  (NT.Ty_uninter "Random.State.t", NT.Ty_constructor ("list", [Ty_int]))),  (NT.Ty_arrow  ((NT.Ty_arrow  (NT.Ty_uninter "Random.State.t", NT.Ty_constructor ("list", [Ty_int]))),  NT.Ty_constructor ("list", [Ty_int])))))
+        (* failwith "hi" *)
+      else
       (* let _ = Printf.printf "id: %s\n" id.x in *)
       let id = bi_typed_id_infer ctx id in
       (Var id) #: id.ty
